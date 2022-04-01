@@ -1,12 +1,27 @@
-import React, { useState } from 'react'
-
+import React, { useContext, useState } from 'react'
+import { AuthContext } from '../Contexts/AuthContext'
 const Login = () => {
  
   const [user,setUser]=useState()
   const [password,setPassword]=useState()
 
+  const {login} =useContext(AuthContext)
+
   const userLogin=()=>{
-      console.log(user,password)
+       const obj={
+        email:user,
+        password:password
+       }
+
+      // console.log(obj);
+
+       fetch("https://reqres.in/api/login",{
+         method:"POST",
+         body:JSON.stringify(obj),
+         headers:{"Content-Type":"application/json"}
+       }).then((res)=>res.json())
+       .then((res)=>login(res.token))
+
   }
 
   return (
